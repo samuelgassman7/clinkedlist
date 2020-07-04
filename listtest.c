@@ -12,8 +12,8 @@ struct listtest{
 
 
 struct list2{
-	char * str;
 	struct list2 * next;
+	char * str;
 	struct list2 * prev;
 }head, one, two, three;
 
@@ -70,16 +70,16 @@ main(){
 	int * prev = (int*)&list1.prev;
 
 	//printf("the difference between the next and val is: %d; prev and val: %d", (uintptr_t)next - (uintptr_t)val, (uintptr_t)prev - (uintptr_t)val);
-	addIteratively((void*) &list1, (void*) &toadd, (uintptr_t)next - (uintptr_t)val, (uintptr_t)prev - (uintptr_t)val);
+	addIterativelyWithPrev((void*) &list1, (void*) &toadd, (uintptr_t)next - (uintptr_t)val, (uintptr_t)prev - (uintptr_t)val);
 
 	//printf("the address of list1.next is: %p\n", &list1.next);
 	//printf("the value of list1.next is: %d\n", list1.next);
 	//printf("the address of toadd is: %p\n", &toadd);
 	//printf("Second node info:\n");
 
-	addIteratively((void*) &list1, (void*) &third, sizeof(third.next), sizeof(third.next) + sizeof(third.prev));
-	addIteratively((void*) &list1, (void*) &fourth, sizeof(fourth.next), sizeof(fourth.next) + sizeof(fourth.prev));
-	addIteratively((void*) &list1, (void*) fifth, sizeof(fourth.next), sizeof(fourth.next) + sizeof(fourth.prev));
+	addIterativelyWithPrev((void*) &list1, (void*) &third, sizeof(third.next), sizeof(third.next) + sizeof(third.prev));
+	addIterativelyWithPrev((void*) &list1, (void*) &fourth, sizeof(fourth.next), sizeof(fourth.next) + sizeof(fourth.prev));
+	addIterativelyWithPrev((void*) &list1, (void*) fifth, sizeof(fourth.next), sizeof(fourth.next) + sizeof(fourth.prev));
 
 	struct listtest * temp = &list1;
 	puts("print forwards:\n");
@@ -123,14 +123,14 @@ main(){
 	three.next = NULL;
 	three.prev = NULL;
 
-	int * str = (int*)&head.str;
+	int * str = (int*)&head;
 	next = (int*)&head.next;
 	prev = (int*)&head.prev;
 
-	addIteratively((void*) &head, (void*) &one, (uintptr_t)next - (uintptr_t)str, (uintptr_t)prev - (uintptr_t)str);
+	addIterativelyWithPrev((void*) &head, (void*) &one, (uintptr_t)next - (uintptr_t)str, (uintptr_t)prev - (uintptr_t)str);
 
-	addIteratively((void*) &head, (void*) &two, (uintptr_t)next - (uintptr_t)str, (uintptr_t)prev - (uintptr_t)str);
-	addIteratively((void*) &head, (void*) &three, (uintptr_t)next - (uintptr_t)str, (uintptr_t)prev - (uintptr_t)str);
+	addIterativelyWithPrev((void*) &head, (void*) &two, (uintptr_t)next - (uintptr_t)str, (uintptr_t)prev - (uintptr_t)str);
+	addIterativelyWithPrev((void*) &head, (void*) &three, (uintptr_t)next - (uintptr_t)str, (uintptr_t)prev - (uintptr_t)str);
 
 	puts("print forwards:\n");
 	struct list2 * temp2 = &head;
