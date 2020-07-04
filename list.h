@@ -17,15 +17,16 @@ addIteratively(void * head, int * toadd, unsigned int nextoffset, unsigned int p
 
 	int * iterator = head;	
 	int * lastnode = NULL;
-
+	int * prev = toadd + prevoffset/sizeof(int);
 	
-	printf("address being dereferenced is: %p", (void*) (iterator + nextoffset));
+	//printf("address being dereferenced is: %p", (void*) (iterator + nextoffset));
 	if(*(iterator+nextoffset/sizeof(int)) == (uintptr_t)NULL){
 		
 		iterator += nextoffset/sizeof(int);
 		*(iterator) = (uintptr_t)toadd;
-		
-		printf("in if: address of list1.next: %x\n", *(iterator));
+		*(prev) = (uintptr_t)head;
+		//printf("address of lastnode should be address of head: %p\n", (void*) *(prev));
+		//printf("in if: address of list1.next: %x\n", *(iterator));
 		
 		return 0;
 	}
@@ -38,9 +39,10 @@ addIteratively(void * head, int * toadd, unsigned int nextoffset, unsigned int p
 		iterator +=nextoffset/sizeof(int);
 	}
 
-	printf("address of lastnode should be address of toadd: %p\n", (void*)lastnode);
-	printf("address of iterator is: %p\n", (void*)iterator);
+	//printf("address of lastnode should be address of toadd: %p\n", (void*)lastnode);
+	//printf("address of iterator is: %p\n", (void*)iterator);
 	*iterator = (uintptr_t)toadd;
+	*(prev) =  (uintptr_t)(iterator- nextoffset/sizeof(int));
 	
 
 }

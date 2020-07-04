@@ -19,15 +19,15 @@ struct list2{
 
 int
 main(){
-	list1.val = 10;
+	list1.val = 1;
 	list1.next = NULL;
 	list1.prev = NULL;
 
-	toadd.val = 7;
+	toadd.val = 2;
 	toadd.next = NULL;
 	toadd.prev = NULL;
 
-	third.val = 8;
+	third.val = 3;
 	third.next = NULL;
 	third.prev = NULL;
 
@@ -38,19 +38,30 @@ main(){
 
 
 	struct listtest * fifth = malloc(sizeof(struct listtest));
-	fifth->val = 9;
+	fifth->val = 5;
 	fifth->next = NULL;
 	fifth->prev = NULL;
 	//printf("third addresses\nthird.val: %x\nthird.next: %x\nthird.prev: %x\n", &third.val, &third.next, &third.prev);
 
 	//printf("toadd.next is: %x\n", toadd.next); 
 
-
+	/*
 	printf("head: %p\n", (void*)&list1);
 	printf("head.next: %p\n", (void*) &list1.next);
+	printf("head.prev: %p\n\n", (void*) &list1.prev);
 	printf("toadd: %p\n", (void*)&toadd);
 	printf("toadd.next: %p\n", (void*) &toadd.next);
-	//printf("third: %p\n", (void*)&third);
+	printf("toadd.prev: %p\n\n", (void*) &toadd.prev);
+	printf("third: %p\n", (void*)&third);
+	printf("third.next: %p\n", (void*)&third.next);
+	printf("third.prev: %p\n\n", (void*)&third.prev);
+	printf("fourth: %p\n", (void*)&fourth);
+	printf("fourth.next: %p\n", (void*)&fourth.next);
+	printf("fourth.prev: %p\n\n", (void*)&fourth.prev);	
+	printf("fifth: %p\n", (void*)fifth);
+	printf("fifth.next: %p\n", (void*)&(fifth->next));
+	printf("fifth.prev: %p\n\n", (void*)&(fifth->prev));
+	*/
 	//printf("head + nextoffset Original: %p\n", &(list1.next));	
 	
 
@@ -58,12 +69,12 @@ main(){
 	int * next = (int*)&list1.next;
 	int * prev = (int*)&list1.prev;
 
-	printf("the difference between the next and val is: %d; prev and val: %d", (uintptr_t)next - (uintptr_t)val, (uintptr_t)prev - (uintptr_t)val);
-	//addIteratively((void *)&list1, (void *)&toadd, sizeof);
+	//printf("the difference between the next and val is: %d; prev and val: %d", (uintptr_t)next - (uintptr_t)val, (uintptr_t)prev - (uintptr_t)val);
+	addIteratively((void*) &list1, (void*) &toadd, (uintptr_t)next - (uintptr_t)val, (uintptr_t)prev - (uintptr_t)val);
 
-	printf("the address of list1.next is: %p\n", &list1.next);
-	printf("the value of list1.next is: %d\n", list1.next);
-	printf("the address of toadd is: %p\n", &toadd);
+	//printf("the address of list1.next is: %p\n", &list1.next);
+	//printf("the value of list1.next is: %d\n", list1.next);
+	//printf("the address of toadd is: %p\n", &toadd);
 	//printf("Second node info:\n");
 
 	addIteratively((void*) &list1, (void*) &third, sizeof(third.next), sizeof(third.next) + sizeof(third.prev));
@@ -71,11 +82,19 @@ main(){
 	addIteratively((void*) &list1, (void*) fifth, sizeof(fourth.next), sizeof(fourth.next) + sizeof(fourth.prev));
 
 	struct listtest * temp = &list1;
+	puts("print forwards:\n");
 	while(temp!= NULL){
 		printf("%d\n", temp->val);
 		temp = temp->next;
 	}
 	
+	puts("print backwards:\n");
+	temp = fifth;
+	while(temp != NULL){
+		printf("%d\n", temp->val);
+		temp = temp->prev;
+	}
+
 	free(fifth);
 
 
@@ -94,18 +113,43 @@ main(){
 	one.prev = NULL;
 
 	
+	two.str = malloc(4);
+	strcpy(two.str, "two\0");
+	two.next = NULL;
+	two.prev = NULL;
+
+	three.str = malloc(6);
+	strcpy(three.str, "three\0");
+	three.next = NULL;
+	three.prev = NULL;
+
 	int * str = (int*)&head.str;
 	next = (int*)&head.next;
 	prev = (int*)&head.prev;
 
 	addIteratively((void*) &head, (void*) &one, (uintptr_t)next - (uintptr_t)str, (uintptr_t)prev - (uintptr_t)str);
 
+	addIteratively((void*) &head, (void*) &two, (uintptr_t)next - (uintptr_t)str, (uintptr_t)prev - (uintptr_t)str);
+	addIteratively((void*) &head, (void*) &three, (uintptr_t)next - (uintptr_t)str, (uintptr_t)prev - (uintptr_t)str);
 
-
+	puts("print forwards:\n");
 	struct list2 * temp2 = &head;
 	while(temp2!= NULL){
 		printf("%s\n", temp2->str);
 		temp2 = temp2->next;
 	}
+
+	puts("print backwards:\n");
+	temp2 = &three;
+	while(temp2 != NULL){
+		printf("%s\n", temp2->str);
+		temp2 = temp2->prev;
+	}
+
+	free(head.str);
+	free(one.str);
+	free(two.str);
+	free(three.str);
+
 
 }
