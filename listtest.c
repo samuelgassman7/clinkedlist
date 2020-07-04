@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "list.h"
 
 struct listtest{
@@ -27,6 +28,11 @@ main(){
 	fourth.next = NULL;
 	fourth.prev = NULL;
 
+
+	struct listtest * fifth = malloc(sizeof(struct listtest));
+	fifth->val = 9;
+	fifth->next = NULL;
+	fifth->prev = NULL;
 	//printf("third addresses\nthird.val: %x\nthird.next: %x\nthird.prev: %x\n", &third.val, &third.next, &third.prev);
 
 	//printf("toadd.next is: %x\n", toadd.next); 
@@ -40,13 +46,14 @@ main(){
 	//printf("head + nextoffset Original: %p\n", &(list1.next));	
 	addIteratively((void *)&list1, (void *)&toadd, sizeof(toadd.next), sizeof(toadd.next) + sizeof(toadd.prev));
 
-	//printf("the address of list1.next is: %p\n", &list1.next);
-	//printf("the value of list1.next is: %d\n", list1.next);
-	//printf("the address of toadd is: %p\n", &toadd);
-	printf("Second node info:\n");
+	printf("the address of list1.next is: %p\n", &list1.next);
+	printf("the value of list1.next is: %d\n", list1.next);
+	printf("the address of toadd is: %p\n", &toadd);
+	//printf("Second node info:\n");
 
-	addIteratively2((void*) &list1, (void*) &third, sizeof(third.next), sizeof(third.next) + sizeof(third.prev));
-	addIteratively2((void*) &list1, (void*) &fourth, sizeof(fourth.next), sizeof(fourth.next) + sizeof(fourth.prev));
+	addIteratively((void*) &list1, (void*) &third, sizeof(third.next), sizeof(third.next) + sizeof(third.prev));
+	addIteratively((void*) &list1, (void*) &fourth, sizeof(fourth.next), sizeof(fourth.next) + sizeof(fourth.prev));
+	addIteratively((void*) &list1, (void*) fifth, sizeof(fourth.next), sizeof(fourth.next) + sizeof(fourth.prev));
 
 	struct listtest * temp = &list1;
 	while(temp!= NULL){
@@ -54,5 +61,5 @@ main(){
 		temp = temp->next;
 	}
 	
-
+	free(fifth);
 }
