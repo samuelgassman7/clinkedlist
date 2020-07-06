@@ -65,7 +65,7 @@ main(){
 	//printf("head + nextoffset Original: %p\n", &(list1.next));	
 	
 
-	int * val = &list1.val;
+	int * val = (int*)&list1;
 	int * next = (int*)&list1.next;
 	int * prev = (int*)&list1.prev;
 
