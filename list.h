@@ -116,37 +116,94 @@ addIteratively(void * head, void * add, unsigned int nextoffset){
 }
 
 void *
-removeAtIndex(void * head, int idx, unsigned int nextoffset, unsigned int prevoffset){
-	int * itereator = head;
+removeAtIndex(void ** head, int idx, unsigned int nextoffset, unsigned int prevoffset){
+	int * iterator = (int*)*head;
 	int * lastnode = NULL;
-	if(head == NULL){
+	int * toreturn = NULL;
+	//empty list
+	if(*head == NULL){
+		puts("SO THAT'S IT? NO HEAD?\n");
+		fflush(stdout);
 		return 0;
 	}
-	if(idx>0 && *(iterator + nextoffset/sizeof(int)) == (uintptr_t)NULL){
+	
+	//remove 0th element from list with a size of at least 2
+	if(idx == 0 && *(iterator + nextoffset/sizeof(int)) != (uintptr_t)NULL){
+		toreturn = (int*)*head;
+		//iterator = iterator.next
+		iterator = (int*)((uintptr_t)*(iterator+nextoffset/sizeof(int)));
+
+		//iterator.prev = NULL
+		iterator += prevoffset/sizeof(int);
+		*(iterator)= (uintptr_t) NULL;
+		//head = next
+		iterator -=prevoffset/sizeof(int);
+		
+		*head = iterator;
+		return toreturn;
+		
+	}
+
+	//remove 0th element from list with a size of 1
+	else if(idx == 0 && *(iterator + nextoffset/sizeof(int)) == (uintptr_t)NULL){
+		toreturn = *head;
+		*head = NULL;
+		return toreturn;
+	}
+
+	//remove NON 0th element from list with a size of 1
+	else if(idx>0 && *(iterator + nextoffset/sizeof(int)) == (uintptr_t)NULL){
+		puts("INDEX OUT OF RANGE. ONLY HEAD ELEMENT PRESENT\n");
+		fflush(stdout);
 		return 0;
 	}
+
+	//find nth element
 	int count = 0;
 	iterator += nextoffset/sizeof(int);
 	while(*iterator!=(uintptr_t)NULL && count != idx){
 		lastnode = iterator-nextoffset/sizeof(int);
 		iterator = (int*)((uintptr_t)*(iterator));
 		iterator +=nextoffset/sizeof(int);
+		count++;
 	}
+
+	//either the index was in the list, or it wasnt. If it wasnt:
 	if(count != idx){
+		puts("INDEX OUT OF RANGE\n");
+		fflush(stdout);
 		return 0;
 	}
 
-	//previousnode.next = nextnode.next;
+
+	//else, the index is inside the bounds of the list, adjust the pointers:
+
+	//previousnode.next = thisnode.next;
 	lastnode+=nextoffset/sizeof(int);
 	*(lastnode) = *(iterator);
+	iterator -=nextoffset/sizeof(int);	
+
+	toreturn = iterator;
 	
+
+	//(aka are we removing the last element or not. If we are, just do the above.
+	//If we are not, we gotta adjust the "prev" pointer of the node after it.)
+	//
+	//
+	//if thisnode.next != NULL:
+	//	nextnode.prev = prev
+	iterator +=nextoffset/sizeof(int);
 	if(*(iterator) != (uintptr_t)NULL){
-		iterator= *(iterator + prevoffset/sizeof(int));
+		iterator = (int*)((uintptr_t)*(iterator));
+		//iterator-=nextoffset/sizeof(int);
+		iterator += prevoffset/sizeof(int);
 		lastnode-= nextoffset/sizeof(int);
-		lastnode+= 
+		*(iterator) = (uintptr_t)lastnode;
+	}
+	//no else required, if thisnode.next == NULL where thisnode is to be removed, then
+	//no other "prev" pointers need to be adjusted.
 
-	
-
+	return toreturn;
 
 }
 

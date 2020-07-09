@@ -65,9 +65,9 @@ main(){
 	//printf("head + nextoffset Original: %p\n", &(list1.next));	
 	
 
-	int * val = (int*)&list1;
-	int * next = (int*)&list1.next;
-	int * prev = (int*)&list1.prev;
+	uintptr_t val = (uintptr_t)&list1;
+	uintptr_t next = (uintptr_t)&list1.next;
+	uintptr_t prev = (uintptr_t)&list1.prev;
 
 	//printf("the difference between the next and val is: %d; prev and val: %d", (uintptr_t)next - (uintptr_t)val, (uintptr_t)prev - (uintptr_t)val);
 	addIterativelyWithPrev((void*) &list1, (void*) &toadd, (uintptr_t)next - (uintptr_t)val, (uintptr_t)prev - (uintptr_t)val);
@@ -94,6 +94,33 @@ main(){
 		printf("%d\n", temp->val);
 		temp = temp->prev;
 	}
+
+	//printf("ADDRESS OF 0th ELEMENT IS: %x\n", (void*)&list1);
+	//printf("ADDRESS OF 0th ELEMENT.NEXT IS: %x\n", (void*)&list1.next);
+	//printf("VALUE OF 0th ELEMENT.NEXT IS: %x\n\n", (void*)list1.next);
+	//printf("ADDRESS OF 1st ELEMENT IS: %x\n", (void*)&toadd);
+	//printf("ADDRESS OF 2nd ELEMENT IS: %x\n", (void*)&third);
+	void* realhead = &list1;
+	struct listtest * returned = (struct listtest*)removeAtIndex((void*) &realhead, 1, sizeof(fourth.next), sizeof(fourth.next) + sizeof(fourth.prev));
+	temp = (struct listtest *)realhead;
+	//printf("first element is: %x", (void*) temp);
+	puts("print forwards post removal:\n");
+	while(temp!= NULL){
+		printf("%d\n", temp->val);
+		temp = temp->next;
+	}
+			
+
+	puts("print backwards post removal:\n");
+	temp = fifth;
+	while(temp != NULL){
+		printf("%d\n", temp->val);
+		temp = temp->prev;
+	}
+
+
+	//printf("RETURNED ADDRESS %p\n", (void*)returned);
+
 
 	free(fifth);
 
@@ -123,9 +150,9 @@ main(){
 	three.next = NULL;
 	three.prev = NULL;
 
-	int * str = (int*)&head;
-	next = (int*)&head.next;
-	prev = (int*)&head.prev;
+	uintptr_t str = (uintptr_t)&head;
+	next = (uintptr_t)&head.next;
+	prev = (uintptr_t)&head.prev;
 
 	addIterativelyWithPrev((void*) &head, (void*) &one, (uintptr_t)next - (uintptr_t)str, (uintptr_t)prev - (uintptr_t)str);
 
@@ -150,6 +177,7 @@ main(){
 	free(one.str);
 	free(two.str);
 	free(three.str);
+
 
 
 }
