@@ -101,7 +101,8 @@ main(){
 	//printf("ADDRESS OF 1st ELEMENT IS: %x\n", (void*)&toadd);
 	//printf("ADDRESS OF 2nd ELEMENT IS: %x\n", (void*)&third);
 	void* realhead = &list1;
-	struct listtest * returned = (struct listtest*)removeAtIndex((void*) &realhead, 1, sizeof(fourth.next), sizeof(fourth.next) + sizeof(fourth.prev));
+	void* realtail = fifth;
+	struct listtest * returned = (struct listtest*)removeAtIndex((void*) &realhead, (void*)&realtail, 4, sizeof(fourth.next), sizeof(fourth.next) + sizeof(fourth.prev));
 	temp = (struct listtest *)realhead;
 	//printf("first element is: %x", (void*) temp);
 	puts("print forwards post removal:\n");
@@ -112,7 +113,7 @@ main(){
 			
 
 	puts("print backwards post removal:\n");
-	temp = fifth;
+	temp = (struct listtest*) realtail; 
 	while(temp != NULL){
 		printf("%d\n", temp->val);
 		temp = temp->prev;

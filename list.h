@@ -116,7 +116,7 @@ addIteratively(void * head, void * add, unsigned int nextoffset){
 }
 
 void *
-removeAtIndex(void ** head, int idx, unsigned int nextoffset, unsigned int prevoffset){
+removeAtIndex(void ** head, void ** tail, int idx, unsigned int nextoffset, unsigned int prevoffset){
 	int * iterator = (int*)*head;
 	int * lastnode = NULL;
 	int * toreturn = NULL;
@@ -174,6 +174,14 @@ removeAtIndex(void ** head, int idx, unsigned int nextoffset, unsigned int prevo
 		fflush(stdout);
 		return 0;
 	}
+
+	//check if the element to remove is at the end of the list
+	//Requirements:
+	//	count == idx and iterator.next == NULL (aka last element of the list)
+	if(count == idx && *iterator == (uintptr_t)NULL && tail != NULL && *tail != NULL){
+		*tail = lastnode;
+	}
+
 
 
 	//else, the index is inside the bounds of the list, adjust the pointers:
