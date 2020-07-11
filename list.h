@@ -115,6 +115,8 @@ addIteratively(void * head, void * add, unsigned int nextoffset){
 
 }
 
+
+//optional tail parameter
 void *
 removeAtIndex(void ** head, void ** tail, int idx, unsigned int nextoffset, unsigned int prevoffset){
 	int * iterator = (int*)*head;
