@@ -11,15 +11,15 @@ addToTailWithPrev(void ** tail, void * add, unsigned int nextoffset, unsigned in
 
 	//tail.next
 	int * next = tail2 + nextoffset/sizeof(int);
-	printf("tail.next is: %p\n", (void*) next);	
+	//printf("tail.next is: %p\n", (void*) next);	
 	
 	//next = toadd
 	*(next) = (uintptr_t)toadd;
 	
 	//toadd.prev
-	printf("address of toadd: %p\n", (void*) toadd);
+	//printf("address of toadd: %p\n", (void*) toadd);
 	int * prev = toadd + prevoffset/sizeof(int);
-	printf("toadd.prev is: %p\n", (void*) prev);
+	//printf("toadd.prev is: %p\n", (void*) prev);
 
 	//prev = tail
 	*(prev) = (uintptr_t)tail2;
