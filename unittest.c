@@ -211,6 +211,8 @@ main(){
 ///////////////////////////////////////////
 //beginning of testing:
 
+//	printf("sizeof int: %d, next offset is: %d, prev offset is: %d", sizeof(int), anext, aprev);
+
 
 	addIterativelyWithPrev(&ahead, &aone, anext, aprev);
 	addIterativelyWithPrev(&ahead, &atwo, anext, aprev);

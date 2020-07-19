@@ -6,11 +6,11 @@
 
 int
 addToTailWithPrev(void ** tail, void * add, unsigned int nextoffset, unsigned int prevoffset){
-	int* tail2 = (int*) *tail;
-	int *toadd = (int*) add;
+	long* tail2 = (long*) *tail;
+	long*toadd = (long*) add;
 
 	//tail.next
-	int * next = tail2 + nextoffset/sizeof(int);
+	long* next = tail2 + nextoffset/sizeof(long);
 	//printf("tail.next is: %p\n", (void*) next);	
 	
 	//next = toadd
@@ -18,7 +18,7 @@ addToTailWithPrev(void ** tail, void * add, unsigned int nextoffset, unsigned in
 	
 	//toadd.prev
 	//printf("address of toadd: %p\n", (void*) toadd);
-	int * prev = toadd + prevoffset/sizeof(int);
+	long* prev = toadd + prevoffset/sizeof(long);
 	//printf("toadd.prev is: %p\n", (void*) prev);
 
 	//prev = tail
@@ -30,11 +30,11 @@ addToTailWithPrev(void ** tail, void * add, unsigned int nextoffset, unsigned in
 
 int
 addToTail(void ** tail, void * add, unsigned int nextoffset){
-	int * tail2 = (int*) *(tail);
-	int *toadd = (int*) add;
+	long* tail2 = (long*) *(tail);
+	long*toadd = (long*) add;
 	
 	//tail.next
-	int * next = tail2 + nextoffset/sizeof(int);
+	long* next = tail2 + nextoffset/sizeof(long);
 	
 	//next = toadd
 	*(next) = (uintptr_t)toadd;
@@ -47,17 +47,17 @@ addToTail(void ** tail, void * add, unsigned int nextoffset){
 
 int
 addIterativelyWithPrev(void * head, void * add, unsigned int nextoffset, unsigned int prevoffset){
-	int * toadd = (int *)add;
-	head = (int *)head;
+	long* toadd = (long*)add;
+	head = (long*)head;
 
-	int * iterator = head;	
-	int * lastnode = NULL;
-	int * prev = toadd + prevoffset/sizeof(int);
+	long* iterator = head;	
+	long* lastnode = NULL;
+	long* prev = toadd + prevoffset/sizeof(long);
 	
 	//printf("address being dereferenced is: %p", (void*) (iterator + nextoffset));
-	if(*(iterator+nextoffset/sizeof(int)) == (uintptr_t)NULL){
+	if(*(iterator+nextoffset/sizeof(long)) == (uintptr_t)NULL){
 		
-		iterator += nextoffset/sizeof(int);
+		iterator += nextoffset/sizeof(long);
 		*(iterator) = (uintptr_t)toadd;
 		*(prev) = (uintptr_t)head;
 		//printf("address of lastnode should be address of head: %p\n", (void*) *(prev));
@@ -67,33 +67,33 @@ addIterativelyWithPrev(void * head, void * add, unsigned int nextoffset, unsigne
 	}
 
 
-	iterator += nextoffset/sizeof(int);
+	iterator += nextoffset/sizeof(long);
 	while(*iterator!=(uintptr_t)NULL){
-		lastnode = iterator-nextoffset/sizeof(int);
-		iterator = (int*)((uintptr_t)*(iterator));
-		iterator +=nextoffset/sizeof(int);
+		lastnode = iterator-nextoffset/sizeof(long);
+		iterator = (long*)((uintptr_t)*(iterator));
+		iterator +=nextoffset/sizeof(long);
 	}
 
 	//printf("address of lastnode should be address of toadd: %p\n", (void*)lastnode);
 	//printf("address of iterator is: %p\n", (void*)iterator);
 	*iterator = (uintptr_t)toadd;
-	*(prev) =  (uintptr_t)(iterator- nextoffset/sizeof(int));
+	*(prev) =  (uintptr_t)(iterator- nextoffset/sizeof(long));
 	
 
 }
 
 int
 addIteratively(void * head, void * add, unsigned int nextoffset){
-	int * toadd = (int *) add;
-	head = (int *)head;
+	long* toadd = (long*) add;
+	head = (long*)head;
 
-	int * iterator = head;	
-	int * lastnode = NULL;
+	long* iterator = head;	
+	long* lastnode = NULL;
 	
 	//printf("address being dereferenced is: %p", (void*) (iterator + nextoffset));
-	if(*(iterator+nextoffset/sizeof(int)) == (uintptr_t)NULL){
+	if(*(iterator+nextoffset/sizeof(long)) == (uintptr_t)NULL){
 		
-		iterator += nextoffset/sizeof(int);
+		iterator += nextoffset/sizeof(long);
 		*(iterator) = (uintptr_t)toadd;
 		//printf("in if: address of list1.next: %x\n", *(iterator));
 		
@@ -101,11 +101,11 @@ addIteratively(void * head, void * add, unsigned int nextoffset){
 	}
 
 
-	iterator += nextoffset/sizeof(int);
+	iterator += nextoffset/sizeof(long);
 	while(*iterator!=(uintptr_t)NULL){
-		lastnode = iterator-nextoffset/sizeof(int);
-		iterator = (int*)((uintptr_t)*(iterator));
-		iterator +=nextoffset/sizeof(int);
+		lastnode = iterator-nextoffset/sizeof(long);
+		iterator = (long*)((uintptr_t)*(iterator));
+		iterator +=nextoffset/sizeof(long);
 	}
 
 	//printf("address of lastnode should be address of toadd: %p\n", (void*)lastnode);
@@ -119,9 +119,9 @@ addIteratively(void * head, void * add, unsigned int nextoffset){
 //optional tail parameter
 void *
 removeAtIndex(void ** head, void ** tail, int idx, unsigned int nextoffset, unsigned int prevoffset){
-	int * iterator = (int*)*head;
-	int * lastnode = NULL;
-	int * toreturn = NULL;
+	long* iterator = (long*)*head;
+	long* lastnode = NULL;
+	long* toreturn = NULL;
 	//empty list
 	if(*head == NULL){
 		puts("SO THAT'S IT? NO HEAD?\n");
@@ -130,16 +130,16 @@ removeAtIndex(void ** head, void ** tail, int idx, unsigned int nextoffset, unsi
 	}
 	
 	//remove 0th element from list with a size of at least 2
-	if(idx == 0 && *(iterator + nextoffset/sizeof(int)) != (uintptr_t)NULL){
-		toreturn = (int*)*head;
+	if(idx == 0 && *(iterator + nextoffset/sizeof(long)) != (uintptr_t)NULL){
+		toreturn = (long*)*head;
 		//iterator = iterator.next
-		iterator = (int*)((uintptr_t)*(iterator+nextoffset/sizeof(int)));
+		iterator = (long*)((uintptr_t)*(iterator+nextoffset/sizeof(long)));
 
 		//iterator.prev = NULL
-		iterator += prevoffset/sizeof(int);
+		iterator += prevoffset/sizeof(long);
 		*(iterator)= (uintptr_t) NULL;
 		//head = next
-		iterator -=prevoffset/sizeof(int);
+		iterator -=prevoffset/sizeof(long);
 		
 		*head = iterator;
 		return toreturn;
@@ -147,14 +147,14 @@ removeAtIndex(void ** head, void ** tail, int idx, unsigned int nextoffset, unsi
 	}
 
 	//remove 0th element from list with a size of 1
-	else if(idx == 0 && *(iterator + nextoffset/sizeof(int)) == (uintptr_t)NULL){
+	else if(idx == 0 && *(iterator + nextoffset/sizeof(long)) == (uintptr_t)NULL){
 		toreturn = *head;
 		*head = NULL;
 		return toreturn;
 	}
 
 	//remove NON 0th element from list with a size of 1
-	else if(idx>0 && *(iterator + nextoffset/sizeof(int)) == (uintptr_t)NULL){
+	else if(idx>0 && *(iterator + nextoffset/sizeof(long)) == (uintptr_t)NULL){
 		puts("INDEX OUT OF RANGE. ONLY HEAD ELEMENT PRESENT\n");
 		fflush(stdout);
 		return 0;
@@ -162,11 +162,11 @@ removeAtIndex(void ** head, void ** tail, int idx, unsigned int nextoffset, unsi
 
 	//find nth element
 	int count = 0;
-	iterator += nextoffset/sizeof(int);
+	iterator += nextoffset/sizeof(long);
 	while(*iterator!=(uintptr_t)NULL && count != idx){
-		lastnode = iterator-nextoffset/sizeof(int);
-		iterator = (int*)((uintptr_t)*(iterator));
-		iterator +=nextoffset/sizeof(int);
+		lastnode = iterator-nextoffset/sizeof(long);
+		iterator = (long*)((uintptr_t)*(iterator));
+		iterator +=nextoffset/sizeof(long);
 		count++;
 	}
 
@@ -189,9 +189,9 @@ removeAtIndex(void ** head, void ** tail, int idx, unsigned int nextoffset, unsi
 	//else, the index is inside the bounds of the list, adjust the pointers:
 
 	//previousnode.next = thisnode.next;
-	lastnode+=nextoffset/sizeof(int);
+	lastnode+=nextoffset/sizeof(long);
 	*(lastnode) = *(iterator);
-	iterator -=nextoffset/sizeof(int);	
+	iterator -=nextoffset/sizeof(long);	
 
 	toreturn = iterator;
 	
@@ -202,12 +202,12 @@ removeAtIndex(void ** head, void ** tail, int idx, unsigned int nextoffset, unsi
 	//
 	//if thisnode.next != NULL:
 	//	nextnode.prev = prev
-	iterator +=nextoffset/sizeof(int);
+	iterator +=nextoffset/sizeof(long);
 	if(*(iterator) != (uintptr_t)NULL){
-		iterator = (int*)((uintptr_t)*(iterator));
-		//iterator-=nextoffset/sizeof(int);
-		iterator += prevoffset/sizeof(int);
-		lastnode-= nextoffset/sizeof(int);
+		iterator = (long*)((uintptr_t)*(iterator));
+		//iterator-=nextoffset/sizeof(long);
+		iterator += prevoffset/sizeof(long);
+		lastnode-= nextoffset/sizeof(long);
 		*(iterator) = (uintptr_t)lastnode;
 	}
 	//no else required, if thisnode.next == NULL where thisnode is to be removed, then
